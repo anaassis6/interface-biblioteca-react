@@ -1,6 +1,6 @@
 import estilo from './Cabecalho.module.css';
 import logotipo from '../../assets/logotipo.png';
-import { APP_ROUTES } from '../../app.Config';
+import { APP_ROUTES } from '../../appConfig';
 
 function Cabecalho() {
     return (
