@@ -9,6 +9,9 @@ function Cabecalho() {
                 className={estilo.imgLogo}>
                 <img src={logotipo} alt="logotipo" />
             </a>
+            <a href={APP_ROUTES.ROUTE_ALUNO}>Alunos</a>
+            <a href={APP_ROUTES.ROUTE_LIVRO}>Livros</a>
+            <a href={APP_ROUTES.ROUTE_EMPRESTIMO}>Empréstimos</a>
             <a href={APP_ROUTES.ROUTE_LOGIN}>Login</a>
         </header>
     );
