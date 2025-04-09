@@ -12,9 +12,9 @@ function AppRoutes() {
             <Routes>
                 <Route path={APP_ROUTES.ROUTE_HOME} element={<PHome />}></Route>
                 <Route path={APP_ROUTES.ROUTE_LOGIN} element={<PLogin />}></Route>
-                <Route path={APP_ROUTES.ROUTE_ALUNO} element={<PAluno />}></Route>
-                <Route path={APP_ROUTES.ROUTE_LIVRO} element={<PLivro />}></Route>
-                <Route path={APP_ROUTES.ROUTE_EMPRESTIMO} element={<PEmprestimo />}></Route>
+                <Route path={APP_ROUTES.ROUTE_LISTA_ALUNO} element={<PAluno />}></Route>
+                <Route path={APP_ROUTES.ROUTE_LISTA_LIVRO} element={<PLivro />}></Route>
+                <Route path={APP_ROUTES.ROUTE_LISTA_EMPRESTIMO} element={<PEmprestimo />}></Route>
             </Routes>
         </BrowserRouter>
     );

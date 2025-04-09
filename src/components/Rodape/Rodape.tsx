@@ -1,9 +1,10 @@
+import { JSX } from 'react';
 import estilo from './Rodape.module.css';
 
-function Rodape() {
+function Rodape(): JSX.Element {
     return (
         <footer className={estilo.rodape}>
-            <p>Desenvolvido por: Aula React</p>
+            <p>Desenvolvido por: Ana Luiza</p>
             <p>Copyright</p>
         </footer>
     );

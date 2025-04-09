@@ -1,37 +1,37 @@
 import { SERVER_CFG } from "../appConfig";
+import EmprestimoDTO from "../intefaces/EmprestimoInterface";
 
 class EmprestimoRequests {
-    
-    private serverURL;
-    private routeListaEmprestimo;
-    private routeCadastraEmprestimo;
-    private routeAtualizaEmprestimo;
-    private routeRemoveEmprestimo;
 
+    private serverURL: string;                  
+    private routeListaEmprestimos: string;      
+    private routeCadastraEmprestimo: string;    
+    private routeAtualizaEmprestimo: string;    
+    private routeRemoveEmprestimo: string;      
 
     constructor() {
-        this.serverURL = SERVER_CFG.SERVER_URL;
-        this.routeListaEmprestimo = '/lista/emprestimos'; // Rota configurada na API
-        this.routeCadastraEmprestimo = '/novo/emprestimo'; // Rota configurada na API
-        this.routeAtualizaEmprestimo = '/atualiza/emprestimo'; // Rota configurada na API
-        this.routeRemoveEmprestimo = '/remove/emprestimo'; // Rota configurada na API
+        this.serverURL = SERVER_CFG.SERVER_URL;               
+        this.routeListaEmprestimos = '/lista/emprestimos';    
+        this.routeCadastraEmprestimo = '/novo/emprestimo';    
+        this.routeAtualizaEmprestimo = '/atualiza/emprestimo';
+        this.routeRemoveEmprestimo = '/remove/emprestimo';   
     }
 
     /**
-     * Função que busca a lista de emprestimos na API
-     * @returns Lista com os emprestimos cadastrados no sistema
+     * Método assíncrono que faz uma requisição GET para a API buscando todos os empréstimos cadastrados.
+     * @returns Um objeto JSON contendo a lista de empréstimos, ou null em caso de erro
      */
-    async listarEmprestimos() {
+    async listarEmprestimos(): Promise<EmprestimoDTO | null> {
         try {
-            const respostaAPI = await fetch(`${this.serverURL}${this.routeListaEmprestimo}`);
-
-            if(respostaAPI.ok) {
-                const listaDeEmprestimos = await respostaAPI.json();
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeListaEmprestimos}`);
+            if (respostaAPI.ok) {
+                const listaDeEmprestimos: EmprestimoDTO = await respostaAPI.json();
                 return listaDeEmprestimos;
             }
-            
+
+            return null;
         } catch (error) {
-            console.error(`Erro ao fazer a consulta: ${error}`)
+            console.error(`Erro ao fazer a consulta de livros: ${error}`);
             return null;
         }
     }

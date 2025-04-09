@@ -1,6 +1,7 @@
+import { JSX } from 'react';
 import estilo from './LoginForm.module.css';
 
-function LoginForm() {
+function LoginForm(): JSX.Element {
     return (
         <section className={estilo['form-section']}>
             <h3>LOGIN</h3>

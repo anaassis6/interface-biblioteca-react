@@ -4,11 +4,13 @@ import Rodape from "../../components/Rodape/Rodape";
 
 function PLogin() {
     return (
-        <>
+        <div className="pagina-grid">
             <Cabecalho />
+
             <LoginForm />
+
             <Rodape />
-        </>
+        </div>
     );
 }
 

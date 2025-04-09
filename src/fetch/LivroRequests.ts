@@ -1,37 +1,38 @@
 import { SERVER_CFG } from "../appConfig";
+import LivroDTO from "../intefaces/LivroInterface";
 
 class LivroRequests {
-    
-    private serverURL;
-    private routeListaLivro;
-    private routeCadastraLivro;
-    private routeAtualizaLivro;
-    private routeRemoveLivro;
 
+    private serverURL: string;      
+    private routeListaLivros: string;  
+    private routeCadastraLivro: string; 
+    private routeAtualizaLivro: string; 
+    private routeRemoveLivro: string;   
 
     constructor() {
-        this.serverURL = SERVER_CFG.SERVER_URL;
-        this.routeListaLivro = '/lista/livros'; // Rota configurada na API
-        this.routeCadastraLivro = '/novo/livro'; // Rota configurada na API
-        this.routeAtualizaLivro = '/atualiza/livro'; // Rota configurada na API
-        this.routeRemoveLivro = '/remove/livro'; // Rota configurada na API
+        this.serverURL = SERVER_CFG.SERVER_URL;        
+        this.routeListaLivros = '/lista/livros';     
+        this.routeCadastraLivro = '/novo/livro';       
+        this.routeAtualizaLivro = '/atualiza/livro';    
+        this.routeRemoveLivro = '/remove/livro';       
     }
 
     /**
-     * Função que busca a lista de Livros na API
-     * @returns Lista com os Livros cadastrados no sistema
+     * Método que faz uma requisição à API para buscar a lista de livros cadastrados
+     * @returns Retorna um JSON com a lista de livros ou null em caso de erro
      */
-    async listarLivros() {
+    async listarLivros(): Promise<LivroDTO | null> {
         try {
-            const respostaAPI = await fetch(`${this.serverURL}${this.routeListaLivro}`);
-
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeListaLivros}`);
             if(respostaAPI.ok) {
-                const listaDeLivros = await respostaAPI.json();
+                const listaDeLivros: LivroDTO = await respostaAPI.json();
                 return listaDeLivros;
             }
-            
+
+            return null;
         } catch (error) {
-            console.error(`Erro ao fazer a consulta: ${error}`)
+            console.error(`Erro ao fazer a consulta de livros: ${error}`);
+
             return null;
         }
     }
