@@ -33,12 +33,27 @@ function TabelaEmprestimo(): JSX.Element {
         fetchEmprestimos(); // Executa a função de busca
     }, []); // Array vazio indica que esse efeito será executado apenas uma vez (componenteDidMount)
 
+    const deletar = async (emprestimo: EmprestimoDTO) => {
+        const confirmar = window.confirm(`Deseja mesmo remover o Emprestimo de "${emprestimo.aluno.nome}" do livro "${emprestimo.livro.titulo}"?`);
+
+        if (confirmar && typeof emprestimo.idEmprestimo === 'number') {
+            const removido = await EmprestimoRequests.removerEmprestimo(emprestimo.idEmprestimo);
+            if (removido) {
+                window.location.reload(); //atualiza a página
+            } else {
+                alert('Erro ao remover o Emprestimo');
+            }
+        } else if (confirmar) {
+            alert('Id do Emprestimo inválido');
+        }
+    }
+
     return (
         <main>
             {/* Título da tabela com classe personalizada */}
             <h1 className={estilo['header-tabela-emprestimo']}>Lista de Empréstimos</h1>
 
-               <a
+            <a
                 href={APP_ROUTES.ROUTE_CADASTRO_EMPRESTIMO}
                 className={estilo['anc-pag-cadastro']}
             >
@@ -57,14 +72,14 @@ function TabelaEmprestimo(): JSX.Element {
                 className={estilo['data-table']} // Classe CSS personalizada
             >
                 {/* Colunas da tabela, baseadas nos campos dos objetos de empréstimo */}
-                <Column field="aluno.nome" header="Aluno" headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)'}} style={{ width: '10%', color: 'var(--font-color)' }} /> {/* Nome do aluno */}
-                <Column field="livro.titulo" header="Livro" headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)'}} style={{ color: 'var(--font-color)' }}/> {/* Título do livro */}
+                <Column field="aluno.nome" header="Aluno" headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)' }} style={{ width: '10%', color: 'var(--font-color)' }} /> {/* Nome do aluno */}
+                <Column field="livro.titulo" header="Livro" headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)' }} style={{ color: 'var(--font-color)' }} /> {/* Título do livro */}
 
                 {/* Coluna personalizada para exibir a data do empréstimo formatada */}
                 <Column
                     field="dataEmprestimo"
                     header="Data do emprétimo"
-                    headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)'}}
+                    headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)' }}
                     style={{ width: '15%', color: 'var(--font-color)' }}
                     body={(rowData) => {
                         const data = new Date(rowData.dataEmprestimo); // Converte a string de data em objeto Date
@@ -79,7 +94,7 @@ function TabelaEmprestimo(): JSX.Element {
                 <Column
                     field="dataDevolucao"
                     header="Data de devolução"
-                    headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)'}}
+                    headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)' }}
                     style={{ width: '15%', color: 'var(--font-color)' }}
                     body={(rowData) => {
                         const data = new Date(rowData.dataDevolucao); // Converte a string de data em objeto Date
@@ -91,7 +106,21 @@ function TabelaEmprestimo(): JSX.Element {
                 />
 
                 {/* Coluna com o status do empréstimo (ex: "pendente", "devolvido") */}
-                <Column field="statusEmprestimo" header="Status do empréstimo" headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)'}} style={{ width: '15%', color: 'var(--font-color)' }} />
+                <Column field="statusEmprestimo" header="Status do empréstimo" headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)' }} style={{ width: '15%', color: 'var(--font-color)' }} />
+                <Column
+                    field="idEmprestimo"
+                    header="Ação"
+                    headerStyle={{ backgroundColor: 'var(--cor-primaria)', color: 'var(--font-color)' }}
+                    style={{ width: '15%', color: 'var(--font-color)' }}
+                    body={(rowData) => (
+                        <>
+                            <button
+                                style={{ width: '100%' }}
+                                onClick={() => deletar(rowData)}
+                            >Deletar</button>
+                        </>
+                    )}
+                />
             </DataTable>
         </main>
     );

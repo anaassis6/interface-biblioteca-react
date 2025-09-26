@@ -11,8 +11,8 @@ class EmprestimoRequests {
     private serverURL: string;                  // Variável para o endereço do servidor
     private routeListaEmprestimos: string;      // Variável para a rota de listagem de empréstimos
     private routeCadastraEmprestimo: string;    // Variável para a rota de cadastro de empréstimo
-    private routeAtualizaEmprestimo: string;    // Variável para a rota de atualiação de aluno
-    private routeRemoveEmprestimo: string;      // Variável para a rota de remoção do aluno
+    private routeAtualizaEmprestimo: string;    // Variável para a rota de atualiação de Emprestimo
+    private routeRemoveEmprestimo: string;      // Variável para a rota de remoção do Emprestimo
 
     /**
      * O construtor é executado automaticamente quando a classe é instanciada.
@@ -82,6 +82,26 @@ class EmprestimoRequests {
             return true;
         } catch (error) {
             console.error(`Erro ao enviar o formulário. ${error}`);
+            return false;
+        }
+    }
+
+        async removerEmprestimo(idEmprestimo: number): Promise<boolean> {
+        const token = localStorage.getItem('token');
+        try {
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeRemoveEmprestimo}?idEmprestimo=${idEmprestimo}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': `${token}`
+                }
+            });
+            if (!respostaAPI.ok) {
+                throw new Error('Erro ao fazer requisição à API.');
+            }
+            return true;
+        } catch (error) {
+            console.error(`Erro ao fazer solicitação. ${error}`);
             return false;
         }
     }

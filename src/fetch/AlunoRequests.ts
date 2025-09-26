@@ -73,13 +73,33 @@ class AlunoRequests {
                 body: formAluno
             });
 
-            if(!respostaAPI.ok) {
+            if (!respostaAPI.ok) {
                 throw new Error('Erro ao fazer requisição com o servidor.');
             }
 
             return true;
         } catch (error) {
             console.error(`Erro ao enviar o formulário. ${error}`);
+            return false;
+        }
+    }
+
+    async removerAluno(idAluno: number): Promise<boolean> {
+        const token = localStorage.getItem('token');
+        try {
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeRemoveAluno}?idAluno=${idAluno}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': `${token}`
+                }
+            });
+            if (!respostaAPI.ok) {
+                throw new Error('Erro ao fazer requisição à API.');
+            }
+            return true;
+        } catch (error) {
+            console.error(`Erro ao fazer solicitação. ${error}`);
             return false;
         }
     }
