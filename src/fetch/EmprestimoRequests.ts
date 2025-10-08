@@ -75,7 +75,7 @@ class EmprestimoRequests {
                 }
             );
 
-            if(!respostaAPI.ok) {
+            if (!respostaAPI.ok) {
                 throw new Error("Erro ao fazer a requisição com o servidor.");
             }
 
@@ -86,7 +86,7 @@ class EmprestimoRequests {
         }
     }
 
-        async removerEmprestimo(idEmprestimo: number): Promise<boolean> {
+    async removerEmprestimo(idEmprestimo: number): Promise<boolean> {
         const token = localStorage.getItem('token');
         try {
             const respostaAPI = await fetch(`${this.serverURL}${this.routeRemoveEmprestimo}?idEmprestimo=${idEmprestimo}`, {
@@ -102,6 +102,32 @@ class EmprestimoRequests {
             return true;
         } catch (error) {
             console.error(`Erro ao fazer solicitação. ${error}`);
+            return false;
+        }
+    }
+
+    async enviarFormularioAtualizacaoEmprestimo(formEmprestimo: EmprestimoDTO): Promise<boolean> {
+        const token = localStorage.getItem('token');
+
+        try {
+            const respostaAPI =
+                await fetch(`${this.serverURL}${this.routeAtualizaEmprestimo}
+                ?idEmprestimo=${formEmprestimo.idEmprestimo}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-type': 'application/json',
+                        'x-access-token': `${token}`
+                    },
+                    body: JSON.stringify(formEmprestimo)
+                });
+
+            if (!respostaAPI.ok) {
+                throw new Error('Erro ao fazer requisição com o servidor.');
+            }
+
+            return true;
+        } catch (error) {
+            console.error(`Erro ao enviar requisição. ${error}`);
             return false;
         }
     }
