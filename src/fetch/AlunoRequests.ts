@@ -12,6 +12,7 @@ class AlunoRequests {
     private routeCadastraAluno: string; // Variável para a rota de cadastro de aluno
     private routeAtualizaAluno: string; // Variável para a rota de atualiação de aluno
     private routeRemoveAluno: string;   // Variável para a rota de remoção do aluno
+    private routeListaAluno: string;    // Variável para a rota de listagem de um aluno
 
     /**
      * O construtor é chamado automaticamente quando criamos uma nova instância da classe.
@@ -23,6 +24,7 @@ class AlunoRequests {
         this.routeCadastraAluno = SERVER_CFG.ENDPOINT_CADASTRAR_ALUNO;    // Rota configurada na API
         this.routeAtualizaAluno = SERVER_CFG.ENDPOINT_ATUALIZAR_ALUNO; // Rota configurada na API
         this.routeRemoveAluno = SERVER_CFG.ENDPOINT_REMOVER_ALUNO;    // Rota configurada na API
+        this.routeListaAluno = SERVER_CFG.ENDPOINT_LISTAR_ALUNO;      // Rota configurada na API
     }
 
     /**
@@ -56,6 +58,27 @@ class AlunoRequests {
         }
     }
 
+    async consultaAluno(idAluno: number): Promise<AlunoDTO | null> {
+        const token = localStorage.getItem('token');
+        try {
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeListaAluno}?idAluno=${idAluno}`, {
+                headers: {
+                    'x-access-token': `${token}`
+                }
+            });
+
+            if (respostaAPI.ok) {
+                const aluno: AlunoDTO = await respostaAPI.json();
+                return aluno;
+            } else {
+                throw new Error(`Não foi possível recuperar o aluno.`);
+            }
+        } catch (error) {
+            console.error(`Erro ao fazer consulta do aluno.${error}`);
+            return null;
+        }
+    }
+
     /**
      * Envia os dados do formulário aluno para a API
      * @param formAluno Objeto com os valores do formulário
@@ -64,11 +87,11 @@ class AlunoRequests {
     async enviaFormularioAluno(formAluno: string): Promise<boolean> {
         const token = localStorage.getItem('token'); // recupera o token do localStorage
         try {
-            const respostaAPI = await fetch(`${this.serverURL}${this.routeCadastraAluno}`, {
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeCadastraAluno} `, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-access-token': `${token}`
+                    'x-access-token': `${token} `
                 },
                 body: formAluno
             });
@@ -79,7 +102,7 @@ class AlunoRequests {
 
             return true;
         } catch (error) {
-            console.error(`Erro ao enviar o formulário. ${error}`);
+            console.error(`Erro ao enviar o formulário.${error} `);
             return false;
         }
     }
@@ -87,11 +110,11 @@ class AlunoRequests {
     async removerAluno(idAluno: number): Promise<boolean> {
         const token = localStorage.getItem('token');
         try {
-            const respostaAPI = await fetch(`${this.serverURL}${this.routeRemoveAluno}?idAluno=${idAluno}`, {
+            const respostaAPI = await fetch(`${this.serverURL}${this.routeRemoveAluno}?idAluno = ${idAluno} `, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-access-token': `${token}`
+                    'x-access-token': `${token} `
                 }
             });
             if (!respostaAPI.ok) {
@@ -99,7 +122,7 @@ class AlunoRequests {
             }
             return true;
         } catch (error) {
-            console.error(`Erro ao fazer solicitação. ${error}`);
+            console.error(`Erro ao fazer solicitação.${error} `);
             return false;
         }
     }
@@ -109,12 +132,11 @@ class AlunoRequests {
 
         try {
             const respostaAPI =
-                await fetch(`${this.serverURL}${this.routeAtualizaAluno}
-                ?idAluno=${formAluno.idAluno}`, {
+                await fetch(`${this.serverURL}${this.routeAtualizaAluno}?idAluno=${formAluno.idAluno} `, {
                     method: 'PUT',
                     headers: {
                         'Content-type': 'application/json',
-                        'x-access-token': `${token}`
+                        'x-access-token': `${token} `
                     },
                     body: JSON.stringify(formAluno)
                 });
@@ -125,7 +147,7 @@ class AlunoRequests {
 
             return true;
         } catch (error) {
-            console.error(`Erro ao enviar requisição. ${error}`);
+            console.error(`Erro ao enviar requisição.${error} `);
             return false;
         }
     }
